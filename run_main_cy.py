@@ -10,8 +10,9 @@ import main_cy
 start_time = datetime.now()
 
 results_folder = sys.argv[1]  ### folder directory to store results, relative to base calfews directory
-redo_init = int(sys.argv[2])   ### this should be 0 if we want to use saved initialized model, else 1
-run_sim = int(sys.argv[3])   ### this should be 1 if we want to run sim, else 0 to just do init
+input_file_name = sys.argv[2]   
+redo_init = int(sys.argv[3])   ### this should be 0 if we want to use saved initialized model, else 1
+run_sim = int(sys.argv[4])   ### this should be 1 if we want to run sim, else 0 to just do init
 
 config = ConfigObj('runtime_params.ini')
 cluster_mode = bool(strtobool(config['cluster_mode']))
@@ -56,7 +57,7 @@ if model_mode == 'central_arizona_project':
 
     ### setup new model
     main_cy_obj = main_cy.main_cy(results_folder)
-    a = main_cy_obj.initialize_py_cap()
+    a = main_cy_obj.initialize_py_cap(input_file_name)
 
     if a == 0:
       ### save initialized model

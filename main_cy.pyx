@@ -69,10 +69,10 @@ cdef class main_cy():
 ################################################################################################################################
 ### Central Arizona Project model initialization
 ################################################################################################################################
-  def initialize_py_cap(self):
-    return self.initialize_cap()
+  def initialize_py_cap(self, input_file_name):
+    return self.initialize_cap(input_file_name)
 
-  cdef int initialize_cap(self) except -1:
+  cdef int initialize_cap(self, input_file_name) except -1:
     cdef:
       str demand_type, expected_release_datafile, base_data_file, input_data_file
 
@@ -113,17 +113,18 @@ cdef class main_cy():
       print(base_data_file)
 
       new_inputs = Inputter(base_data_file, expected_release_datafile, self.model_mode, self.results_folder)
-      if new_inputs.has_full_inputs[self.flow_input_type][self.flow_input_source]:
-        input_data_file = new_inputs.flow_input_source[self.flow_input_type][self.flow_input_source]
-      else:
+      input_data_file = input_file_name
+      #if new_inputs.has_full_inputs[self.flow_input_type][self.flow_input_source]:
+        #input_data_file = new_inputs.flow_input_source[self.flow_input_type][self.flow_input_source]
+      #else:
         # run initialization routine
         # this only happens if we are doing synthetic generation
-        new_inputs.run_initialization('XXX')
+       # new_inputs.run_initialization('XXX')
         # end simulation if error has been through within inner cython/c code (i.e. keyboard interrupt)
-        PyErr_CheckSignals()
-        if True:
-          new_inputs.run_routine(self.flow_input_type, self.flow_input_source)
-          input_data_file = self.results_folder + '/' + new_inputs.export_series[self.flow_input_type][self.flow_input_source]  + "_0.csv"
+        #PyErr_CheckSignals()
+        #if True:
+          #new_inputs.run_routine(self.flow_input_type, self.flow_input_source)
+          #input_data_file = self.results_folder + '/' + new_inputs.export_series[self.flow_input_type][self.flow_input_source]  + "_0.csv"
 
     ### reset seed again to match old code
     if (self.seed > 0):
